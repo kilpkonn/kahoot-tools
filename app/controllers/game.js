@@ -20,6 +20,8 @@ class GameController {
             5000
         );
 
+        kahootSession.setGamecontroller(this);
+
         kahootSession.onRawMessagePlayer = m => {
             if (m.data.id === 9 && localStorage.getItem("bearerToken")) {
                 let json = JSON.parse(m.data.content);
@@ -137,6 +139,7 @@ class GameController {
         $("#add-player").click(() => {
             const playerAmount = parseInt($("#player-amount").val()) || 1;
             const playerName = $("#player-name").val();
+            const autoAnswer = $("#player-auto-answer").val() === "1";
             const playerIsGhost = $("#player-is-ghost").val() === "1";
             const uniqueCid = $("#unique-cid").val() === "1";
 
@@ -197,7 +200,8 @@ class GameController {
                 cards.push({
                     users: users,
                     guid: cardId,
-                    selected: false
+                    selected: false,
+                    autoAnswer: autoAnswer
                 });
                 $("#game-state").text(
                     `Pin: ${kahootSession.pin} | Player Count: ${cards.length}`
@@ -377,6 +381,18 @@ class GameController {
                 );
             }
         });
+    }
+
+    static answerReady() {
+        for (let i = 0; i < cards.length; i++) {
+            const card = cards[i];
+            if (card.autoAnswer) {
+                for (let p = 0; p < card.users.length; p++) {
+                    const user = card.users[p];
+                    user.sendGameAnswer(Math.floor(Math.random() * 4 - 1 / 9**99));
+                }
+            }
+        }
     }
 }
 

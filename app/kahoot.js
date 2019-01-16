@@ -40,11 +40,12 @@ const clientEvents = {
 };
 
 class KahootPlayer {
-    constructor(name, isGhost, cid, kahootSession) {
+    constructor(name, isGhost, cid, kahootSession, autoAnswer) {
         this.name = name;
         this.cid = cid;
         this.isGhost = isGhost;
         this.kahootSession = kahootSession;
+        this.autoAnswer = autoAnswer;
         this.cometd = kahootSession.cometd;
         this.pin = kahootSession.pin;
     }
@@ -117,10 +118,22 @@ class KahootClient {
         this.clientId;
         this.rawSession;
         this.error;
+        this.gameController;
 
         this.onRawMessageController = function (m) {};
         this.onRawMessagePlayer = function (m) {};
         this.onRawMessageStatus = function (m) {};
+        this.onRawMessageEvent = function (m) {
+            let data = JSON.parse(m.data.content);
+            console.log(data);
+            if (data.questionIndex === 0 || data.questionIndex){
+                console.log("Answering!");
+                this.gameController.answerReady();
+            }
+        }
+    }
+    setGamecontroller(gameController){
+        this.gameController = gameController;
     }
 
     initialize(callback) {
@@ -269,6 +282,9 @@ class KahootClient {
                     m
                 ) {
                     self.onRawMessageStatus(m);
+                });
+                self.cometd.subscribe("/service/player", function (m) {
+                    self.onRawMessageEvent(m);
                 });
                 callback(null);
             } else {
