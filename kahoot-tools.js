@@ -1,5 +1,7 @@
 const config = require("./config.json");
 const fs = require("fs");
+const NameCreator = require("./names.js");
+const nameCreator = new NameCreator();
 
 if (!fs.existsSync("./dist")) {
     console.log("Error, please run: `npm run build` before launching the server!")
@@ -12,10 +14,18 @@ if (!fs.existsSync("./dist")) {
     const appPort = config.appPort;
     const corsPort = config.corsPort;
 
-    app.use(express.static("./dist"))
+    app.use(express.static("./dist"));
 
     app.listen(appPort, () => {
         console.log("Running server on port " + appPort);
+    });
+
+    app.get('/names/:count', function (req, res) {
+        let count = parseInt(req.params.count);
+        console.log("Generating names! count: " + count);
+        let names = nameCreator.generateNames(count);
+        console.log(names);
+        res.json(names)
     });
 
     corsAnywhere.createServer({

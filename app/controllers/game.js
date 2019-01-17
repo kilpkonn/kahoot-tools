@@ -19,7 +19,6 @@ class GameController {
             "Created socket, ready for action!",
             5000
         );
-
         kahootSession.setGamecontroller(this);
 
         kahootSession.onRawMessagePlayer = m => {
@@ -81,6 +80,13 @@ class GameController {
                 s4() +
                 s4()
             );
+        }
+
+        function httpGet(theUrl) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+            xmlHttp.send( null );
+            return xmlHttp.responseText;
         }
 
         function getCardByGuid(guid) {
@@ -145,15 +151,25 @@ class GameController {
 
             let users = [];
 
-            if (playerName && playerIsGhost !== undefined) {
+            if (playerIsGhost !== undefined) {
                 let cid = guid();
+                let names = [];
+                if (playerName === ""){
+                    console.log("Generating names!");
+                    names = JSON.parse(httpGet("http://localhost:8080/names/" + playerAmount));
+                    console.log(names);
+                } else {
+                    for(let i = 0; i < playerAmount; i++){
+                        names.append(playerName + i)
+                    }
+                }
                 for (let i = 0; i < playerAmount; i++) {
                     if (uniqueCid) {
                         cid = guid();
                     }
 
                     const user = kahootSession.addPlayer(
-                        playerName + i,
+                        names[i],
                         playerIsGhost,
                         cid
                     );
