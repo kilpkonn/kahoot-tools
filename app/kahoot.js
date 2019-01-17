@@ -126,7 +126,7 @@ class KahootClient {
         this.onRawMessageEvent = function (m) {
             let data = JSON.parse(m.data.content);
             console.log(data);
-            if (data.questionIndex === 0 || data.questionIndex){
+            if (data.questionIndex === 0 || data.questionIndex && !data.timeLeft){
                 console.log("Answering!");
                 this.gameController.answerReady();
             }

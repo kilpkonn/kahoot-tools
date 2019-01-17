@@ -37,9 +37,6 @@ module.exports = {
         ],
         bundle: path.join(dirApp, 'index')
     },
-    /*node: {
-        fs: 'empty'
-    },*/
     resolve: {
         modules: [
             dirNode,

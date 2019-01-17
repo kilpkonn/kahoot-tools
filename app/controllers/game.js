@@ -160,7 +160,7 @@ class GameController {
                     console.log(names);
                 } else {
                     for(let i = 0; i < playerAmount; i++){
-                        names.append(playerName + i)
+                        names.push(playerName + i)
                     }
                 }
                 for (let i = 0; i < playerAmount; i++) {
