@@ -23,9 +23,7 @@ if (!fs.existsSync("./dist")) {
     app.get('/names/:count', function (req, res) {
         let count = parseInt(req.params.count);
         console.log("Generating names! count: " + count);
-        let names = nameCreator.generateNames(count);
-        console.log(names);
-        res.json(names)
+        res.json(nameCreator.generateNames(count))
     });
 
     corsAnywhere.createServer({

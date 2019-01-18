@@ -6,7 +6,7 @@ class NameCreator{
     }
 
     getParts (){
-	    return ['arms_symmetric', 'arms_left', 'bodies_symmetric', 'bodies_left', 'cheeks', 'eyes', 'mouths_noses', 'bodies_right', 'arms_right', "arms_symmetric"].map(fileName => {
+	    return ['arms_left', 'bodies_left', 'eyes','mouths_noses', 'eyes', 'bodies_right', 'arms_right'].map(fileName => {
 		    return fs.readFileSync(`./parts/${fileName}.txt`, 'utf8').split('\n');
         });
     }
