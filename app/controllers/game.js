@@ -399,13 +399,13 @@ class GameController {
         });
     }
 
-    static answerReady() {
+    static answerReady(n=4) {
         for (let i = 0; i < cards.length; i++) {
             const card = cards[i];
             if (card.autoAnswer) {
                 for (let p = 0; p < card.users.length; p++) {
                     const user = card.users[p];
-                    user.sendGameAnswer(Math.floor(Math.random() * 4 - 1 / 9**99));
+                    user.sendGameAnswer(Math.floor(Math.random() * n - 1 / 9**99));
                 }
             }
         }
