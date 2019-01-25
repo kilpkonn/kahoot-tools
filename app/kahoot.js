@@ -128,7 +128,7 @@ class KahootClient {
             console.log(data);
             if (data.questionIndex === 0 || data.questionIndex && !data.timeLeft){
                 console.log("Answering!");
-                this.gameController.answerReady(data.answerMap.length);
+                this.gameController.answerReady(parseInt(data.quizQuestionAnswers[parseInt(data.questionIndex)]));
             }
         }
     }
